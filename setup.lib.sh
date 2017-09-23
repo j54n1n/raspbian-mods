@@ -1,0 +1,178 @@
+#!/bin/bash
+
+# Init system. Sets the variable INIT_LIKE containing the most generic
+# init system.
+# Example: INIT_LIKE=systemd, or ID_LIKE=sysvinit
+detectInitSystem() {
+  which systemctl > /dev/null 2>&1
+  if [ $? = 0 ]; then
+    INIT_LIKE=systemd
+    return
+  fi
+  which service > /dev/null 2>&1
+  if [ $? = 0 ]; then
+    INIT_LIKE=sysvinit
+    return
+  fi
+  INIT_LIKE=""
+}
+
+# DO NOT CHANGE! This is needed to detect the init system.
+detectInitSystem
+
+# Start a service.
+serviceStart() {
+  local serviceName=$1
+  if [ $INIT_LIKE = systemd ]; then
+    systemctl enable $serviceName
+    systemctl start $serviceName
+    return $?
+  fi
+  if [ $INIT_LIKE = sysvinit ]; then
+    service $serviceName start
+    return $?
+  fi
+  return 0
+}
+
+# Stop a service.
+serviceStop() {
+  local serviceName=$1
+  if [ $INIT_LIKE = systemd ]; then
+    systemctl disable $serviceName
+    systemctl stop $serviceName
+    return $?
+  fi
+  if [ $INIT_LIKE = sysvinit ]; then
+    service $serviceName stop
+    return $?
+  fi
+  return 0
+}
+
+# Restart a service.
+serviceRestart() {
+  local serviceName=$1
+  if [ $INIT_LIKE = systemd ]; then
+    systemctl restart $serviceName
+    return $?
+  fi
+  if [ $INIT_LIKE = sysvinit ]; then
+    service $serviceName restart
+    return $?
+  fi
+  return 0
+}
+
+# Query the status of a service.
+serviceStatus() {
+  local serviceName=$1
+  if [ $INIT_LIKE = systemd ]; then
+    systemctl status $serviceName
+    return $?
+  fi
+  if [ $INIT_LIKE = sysvinit ]; then
+    service $serviceName status
+    return $?
+  fi
+  return 0
+}
+
+# Sets the variable ID_LIKE containing the most generic
+# distribution name.
+# Example: ID_LIKE=arch, or ID_LIKE=debian
+detectLinuxDistribution() {
+  eval `cat /etc/*-release | grep ID_LIKE` # debian, arch, ...
+  eval `cat /etc/*-release | grep ID`      # ubuntu, raspbian, ...
+  eval `cat /etc/*-release | grep VERSION` # Verbose ver. May contain substrings: wheezy, Xenial Xerus, Rolling ...
+  # Fix missing $ID_LIKE variable. Use value from $ID instead.
+  if [ -z $ID_LIKE ]; then
+    ID_LIKE="$ID"
+  fi
+}
+
+# DO NOT CHANGE! This is needed to detect the distribution name.
+detectLinuxDistribution
+
+# Arch Linux ARM only. Always use pacman.
+pacman=pacman
+
+# Query if a package is already installed.
+packageQuery() {
+  local packageName=$1
+  if [ $ID_LIKE = arch ]; then
+    $pacman -Qi $packageName > /dev/null
+    return $?
+  fi
+  if [ $ID_LIKE = debian ]; then
+    dpkg-query -l $packageName | grep "^ii" > /dev/null
+    return $?
+  fi
+  return 0
+}
+
+# Update package databases and upgrade system.
+packageUpdate() {
+  if [ $ID_LIKE = arch ]; then
+    $pacman --noconfirm -Syu
+  fi
+  if [ $ID_LIKE = debian ]; then
+    apt-get update
+    apt-get --yes --force-yes upgrade
+  fi
+}
+
+packageInstall() {
+  local packageName=$1
+  if [ $ID_LIKE = arch ]; then
+    $pacman --noconfirm -S $packageName
+    return $?
+  fi
+  if [ $ID_LIKE = debian ]; then
+    apt-get --yes --force-yes -q=2 install $packageName
+    return $?
+  fi
+}
+
+packageUninstall() {
+  local packageName=$1
+  if [ $ID_LIKE = arch ]; then
+    $pacman --noconfirm -R $packageName
+    return $?
+  fi
+  if [ $ID_LIKE = debian ]; then
+    apt-get --yes --force-yes -q=2 --purge autoremove $packageName
+    return $?
+  fi
+}
+
+#Guess what?
+runAsRoot() {
+  sudo bash -c ". $BASH_SOURCE; $1 ${@: +2}"
+}
+
+# Raspbian package mods.
+rpiModPackages() {
+  local uninstallPkgs="
+    wolfram-engine
+    bluej
+    greenfoot
+    nodered
+    sonic-pi
+    minecraft-pi
+    oracle-java8-jdk
+    openjdk-8-jre
+    oracle-java7-jdk
+    openjdk-7-jre
+    gcj-6-jre
+  "
+  #runAsRoot packageUpdate
+  for pkg in $uninstallPkgs; do
+    packageQuery $pkg
+    if [ $? = 0 ]; then
+      runAsRoot packageUninstall $pkg
+    fi
+  done
+  #local uninstallJava="oracle-java8-jdk openjdk-8-jre oracle-java7-jdk openjdk-7-jre gcj-6-jre"
+  #runAsRoot packageUninstall "$uninstallJava"
+}
