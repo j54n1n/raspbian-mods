@@ -215,3 +215,13 @@ rpiEnableVnc() {
   fi
   runAsRoot serviceStart $vncSrv
 }
+
+_setHdmiDmt1024x768() {
+  sed -i 's/^#hdmi_force_hotplug=.*/hdmi_force_hotplug=1/' /boot/config.txt
+  sed -i 's/^#hdmi_group=.*/hdmi_group=2/' /boot/config.txt
+  sed -i 's/^#hdmi_mode=.*/hdmi_mode=16/' /boot/config.txt
+}
+
+rpiSetVideoMode() {
+  runAsRoot _setHdmiDmt1024x768
+}
