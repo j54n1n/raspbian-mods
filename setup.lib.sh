@@ -146,6 +146,16 @@ packageUninstall() {
   fi
 }
 
+packageCleanup() {
+  if [ $ID_LIKE = arch ]; then
+    $pacman --noconfirm -Scc
+  fi
+  if [ $ID_LIKE = debian ]; then
+    apt-get --yes --force-yes -q=2 --purge autoremove
+    apt-get --yes --force-yes -q=2 clean
+  fi
+}
+
 #Guess what?
 runAsRoot() {
   sudo bash -c ". $BASH_SOURCE; $1 ${@: +2}"
@@ -166,13 +176,34 @@ rpiModPackages() {
     openjdk-7-jre
     gcj-6-jre
   "
-  #runAsRoot packageUpdate
+  runAsRoot packageUpdate
   for pkg in $uninstallPkgs; do
     packageQuery $pkg
     if [ $? = 0 ]; then
       runAsRoot packageUninstall $pkg
     fi
   done
-  #local uninstallJava="oracle-java8-jdk openjdk-8-jre oracle-java7-jdk openjdk-7-jre gcj-6-jre"
-  #runAsRoot packageUninstall "$uninstallJava"
+  runAsRoot packageCleanup
+}
+
+# Hide GRUB selection screen at desktop boot.
+_hideGrubScreen() {
+  sed -i 's/GRUB_TIMEOUT=.*/GRUB_TIMEOUT=0/' /etc/default/grub
+  chmod -x /etc/grub.d/05_debian_theme
+  update-grub2
+}
+
+rpiHideGrubScreen() {
+  runAsRoot _hideGrubScreen
+}
+
+# Enable remote desktop access on raspbian.
+rpiEnableVnc() {
+  local vncPkg=realvnc-vnc-server
+  local vncSrv=vncserver-x11-serviced
+  packageQuery $vncPkg
+  if [ $? != 0 ]; then
+    runAsRoot packageInstall $vncPkg
+  fi
+  runAsRoot serviceStart $vncSrv
 }
