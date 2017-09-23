@@ -189,7 +189,7 @@ rpiModPackages() {
   elif [ $ID = raspbian ]; then
     # Hack: For some reason Raspbian tries to install an alternative Java package.
     # Therefore we hand over the entire package list to apt to avoid installation.
-    sudo apt-get --yes --force-yes -q=2 --purge autoremove $uninstallJava
+    sudo apt-get --yes --purge autoremove $uninstallJava
   fi
   runAsRoot packageCleanup
 }
