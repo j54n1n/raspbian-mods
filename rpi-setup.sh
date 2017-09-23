@@ -1,6 +1,6 @@
 #!/bin/bash
 
-readonly URL="https://raw.githubusercontent.com/j54n1n/raspbian-mods/develop/"
+readonly URL="https://raw.githubusercontent.com/j54n1n/raspbian-mods/master/"
 readonly FILES="setup-raspbian.sh setup-rpi-desktop.sh setup.lib.sh"
 
 for file in $FILES; do
