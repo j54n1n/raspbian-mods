@@ -170,11 +170,6 @@ rpiModPackages() {
     nodered
     sonic-pi
     minecraft-pi
-    oracle-java8-jdk
-    openjdk-8-jre
-    oracle-java7-jdk
-    openjdk-7-jre
-    gcj-6-jre
   "
   runAsRoot packageUpdate
   for pkg in $uninstallPkgs; do
@@ -183,6 +178,19 @@ rpiModPackages() {
       runAsRoot packageUninstall $pkg
     fi
   done
+  local uninstallJava="oracle-java8-jdk openjdk-8-jre oracle-java7-jdk openjdk-7-jre gcj-6-jre"
+  if [ $ID = debian ]; then
+    for pkg in $uninstallJava; do
+      packageQuery $pkg
+      if [ $? = 0 ]; then
+        runAsRoot packageUninstall $pkg
+      fi
+    done
+  elif [ $ID = raspbian ]; then
+    # Hack: For some reason Raspbian tries to install an alternative Java package.
+    # Therefore we hand over the entire package list to apt to avoid installation.
+    sudo apt-get --yes --force-yes -q=2 --purge autoremove "$uninstallJava"
+  fi
   runAsRoot packageCleanup
 }
 
