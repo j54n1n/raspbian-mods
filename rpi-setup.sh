@@ -1,7 +1,7 @@
 #!/bin/bash
 
 readonly URL="https://raw.githubusercontent.com/j54n1n/raspbian-mods/master/"
-readonly FILES="setup-raspbian.sh setup-rpi-desktop.sh setup.lib.sh"
+readonly FILES="setup-raspbian.sh setup-rpi-desktop.sh setup.lib.sh prepare-vbox-appliance"
 
 for file in $FILES; do
   wget "$URL$file"

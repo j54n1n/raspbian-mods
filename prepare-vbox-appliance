@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# Check if it has root permissions.
+if [ `id -u` -ne 0 ]; then
+  echo "The script must be run as root in the recovery console!"
+  exit 1
+fi
+
+# Zero out free space to achive higher compression rate for vbox image.
+mount -o ro,remount /
+zerofree -v /dev/sda1
+poweroff
+
+exit 0

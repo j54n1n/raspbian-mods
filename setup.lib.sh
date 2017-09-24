@@ -191,18 +191,27 @@ rpiModPackages() {
     # Therefore we hand over the entire package list to apt to avoid installation.
     sudo apt-get --yes --purge autoremove $uninstallJava
   fi
+  local installPkgsDebian="zerofree"
+  if [ $ID = debian ]; then
+    for pkg in $installPkgsDebian; do
+      packageQuery $pkg
+      if [ $? != 0 ]; then
+        runAsRoot packageInstall $pkg
+      fi
+    done
+  fi
   runAsRoot packageCleanup
 }
 
 # Hide GRUB selection screen at desktop boot.
-_hideGrubScreen() {
-  sed -i 's/GRUB_TIMEOUT=.*/GRUB_TIMEOUT=0/' /etc/default/grub
+_setupGrubScreen() {
+  sed -i 's/GRUB_TIMEOUT=.*/GRUB_TIMEOUT=1/' /etc/default/grub
   chmod -x /etc/grub.d/05_debian_theme
   update-grub2
 }
 
-rpiHideGrubScreen() {
-  runAsRoot _hideGrubScreen
+rpiSetupGrubScreen() {
+  runAsRoot _setupGrubScreen
 }
 
 # Enable remote desktop access on raspbian.
