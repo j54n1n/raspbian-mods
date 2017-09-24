@@ -195,13 +195,13 @@ rpiModPackages() {
 }
 
 # Hide GRUB selection screen at desktop boot.
-_hideGrubScreen() {
-  sed -i 's/GRUB_TIMEOUT=.*/GRUB_TIMEOUT=0/' /etc/default/grub
+_setupGrubScreen() {
+  sed -i 's/GRUB_TIMEOUT=.*/GRUB_TIMEOUT=1/' /etc/default/grub
   chmod -x /etc/grub.d/05_debian_theme
   update-grub2
 }
 
-rpiHideGrubScreen() {
+rpiSetupGrubScreen() {
   runAsRoot _hideGrubScreen
 }
 
