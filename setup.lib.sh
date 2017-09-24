@@ -191,6 +191,15 @@ rpiModPackages() {
     # Therefore we hand over the entire package list to apt to avoid installation.
     sudo apt-get --yes --purge autoremove $uninstallJava
   fi
+  local installPkgsDebian="zerofree"
+  if [ $ID = debian ]; then
+    for pkg in $installPkgsDebian; do
+      packageQuery $pkg
+      if [ $? != 0 ]; then
+        runAsRoot packageInstall $pkg
+      fi
+    done
+  fi
   runAsRoot packageCleanup
 }
 
@@ -202,7 +211,7 @@ _setupGrubScreen() {
 }
 
 rpiSetupGrubScreen() {
-  runAsRoot _hideGrubScreen
+  runAsRoot _setupGrubScreen
 }
 
 # Enable remote desktop access on raspbian.

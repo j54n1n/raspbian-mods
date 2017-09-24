@@ -1,10 +1,6 @@
 # raspbian-mods
-Scripts for customizing Raspbian and Raspberry Pi Desktop images.
-
-To run these scripts simply execute in the terminal window following command:
-```
-curl https://raw.githubusercontent.com/j54n1n/raspbian-mods/develop/rpi-setup.sh | bash
-```
+Scripts for customizing Raspbian and Raspberry Pi Desktop images. For further technical details
+please see the [wiki pages](https://github.com/j54n1n/raspbian-mods/wiki).
 
 ## Setup Raspberry Pi Desktop with VirtualBox
 **You do not own an Raspberry Pi but wish to try out an Raspbian like operating system?**
