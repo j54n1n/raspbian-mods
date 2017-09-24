@@ -1,4 +1,4 @@
-# raspbian-mods
+# Raspbian Mods
 Scripts for customizing Raspbian and Raspberry Pi Desktop images. For further technical details
 please see the [wiki pages](https://github.com/j54n1n/raspbian-mods/wiki).
 
