@@ -27,8 +27,9 @@ Do not worry VirtualBox allows you to create a second virtual PC within your cur
 operating system. Simply grab the
 [latest release for your system](https://www.virtualbox.org/wiki/Downloads) and download both
 the *platform package* and *extension pack*. Install first the platform package and then apply
-the extension pack by double clicking it. Now you are ready to create and import virtual
-machines. 
+the extension pack by double clicking it. Furthermore make sure that your computer has enabled
+[hardware virtualization technology](https://amiduos.com/support/knowledge-base/article/enabling-virtualization-technology-in-hp-systems).
+Now you are ready to create and import virtual machines. 
 
 See also the article on
 [how the VirtualBox Appliance was created](https://github.com/j54n1n/raspbian-mods/wiki/VirtualBox-Appliance-Image-Creation).
