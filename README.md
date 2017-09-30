@@ -1,10 +1,21 @@
 # Raspbian Mods
-Scripts for customizing Raspbian and Raspberry Pi Desktop images. For further technical details
-please see the [wiki pages](https://github.com/j54n1n/raspbian-mods/wiki).
+Scripts for customizing [Raspbian](https://github.com/RPi-Distro) and
+[Raspberry Pi](https://www.raspberrypi.org/) Desktop images.
+For further technical details please see the
+[wiki pages](https://github.com/j54n1n/raspbian-mods/wiki).
+
+## Setup Raspbian with Desktop Environment
+**How to install Raspbian on the Raspberry Pi?**
+Simply [grab the latest release](https://github.com/j54n1n/raspbian-mods/releases/latest)
+and download the ZIP file containing the Raspbian image. Extract the IMG file and
+[copy it over to a suitable SD card](https://www.raspberrypi.org/documentation/installation/installing-images/)
+using the Etcher tool. Then insert the SD card in to the Raspberry Pi. Be patient
+as the first time start process may take some time until it has fully configured
+the Raspberry Pi.
 
 ## Setup Raspberry Pi Desktop with VirtualBox
 **You do not own an Raspberry Pi but wish to try out an Raspbian like operating system?**
-Simply [grab the latest release](https://github.com/j54n1n/raspbian-mods/releases)
+Simply [grab the latest release](https://github.com/j54n1n/raspbian-mods/releases/latest)
 and download the VirtualBox Appliance file and
 [import it to VirtualBox](https://www.virtualbox.org/manual/UserManual.html#ovf).
 
