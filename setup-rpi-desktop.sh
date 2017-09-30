@@ -8,7 +8,7 @@ if [ $ID = debian ]; then
   chmod +x "$(dirname $0)/prepare-rpi-image"
   sudo cp "$(dirname $0)/prepare-vbox-appliance" /usr/local/bin/
   sudo cp "$(dirname $0)/prepare-rpi-image" /usr/local/bin/
-  curl https://raw.githubusercontent.com/Drewsif/PiShrink/63b7509ade7d2fb518536abd3c0d0eca43774b98/pishrink.sh
+  wget https://raw.githubusercontent.com/Drewsif/PiShrink/63b7509ade7d2fb518536abd3c0d0eca43774b98/pishrink.sh
   sudo cp pishrink.sh /usr/local/bin
   rm pishrink.sh
 else
