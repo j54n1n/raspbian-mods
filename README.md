@@ -9,9 +9,9 @@ images. For further technical details please see the
 Simply [grab the latest release](https://github.com/j54n1n/raspbian-mods/releases/latest)
 and download the ZIP file containing the Raspbian image. Extract the IMG file and
 [copy it over to a suitable SD card](https://www.raspberrypi.org/documentation/installation/installing-images/)
-using the Etcher tool. Then insert the SD card in to the Raspberry Pi. Be patient
-as the first time start process may take some time until it has fully configured
-the Raspberry Pi.
+using the [Etcher tool](https://etcher.io/). Then insert the SD card in to the
+Raspberry Pi. Be patient as the first time start process may take some time until
+it has fully configured the Raspberry Pi.
 
 See also the article on
 [how the Raspbian image was created](https://github.com/j54n1n/raspbian-mods/wiki/Raspbian-Image-Creation).
