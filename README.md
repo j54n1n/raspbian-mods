@@ -6,7 +6,7 @@ images. For further technical details please see the
 
 ## Setup Raspbian with Desktop Environment
 **How to install Raspbian on the Raspberry Pi?**
-Simply [grab the latest release](https://github.com/j54n1n/raspbian-mods/releases/latest)
+Simply [grab the latest release](https://github.com/rainerum-robotics-rpi/raspbian-mods/releases/latest)
 and download the ZIP file containing the Raspbian image. Extract the IMG file and
 [copy it over to a suitable SD card](https://www.raspberrypi.org/documentation/installation/installing-images/)
 using the [Etcher tool](https://etcher.io/). Then insert the SD card in to the
@@ -14,11 +14,11 @@ Raspberry Pi. Be patient as the first time start process may take some time unti
 it has fully configured the Raspberry Pi.
 
 See also the article on
-[how the Raspbian image was created](https://github.com/j54n1n/raspbian-mods/wiki/Raspbian-Image-Creation).
+[how the Raspbian image was created](https://github.com/rainerum-robotics-rpi/raspbian-mods/wiki/Raspbian-Image-Creation).
 
 ## Setup Raspberry Pi Desktop with VirtualBox
 **You do not own an Raspberry Pi but wish to try out an Raspbian like operating system?**
-Simply [grab the latest release](https://github.com/j54n1n/raspbian-mods/releases/latest)
+Simply [grab the latest release](https://github.com/rainerum-robotics-rpi/raspbian-mods/releases/latest)
 and download the VirtualBox Appliance file and
 [import it to VirtualBox](https://www.virtualbox.org/manual/ch01.html#ovf).
 
@@ -32,4 +32,4 @@ the extension pack by double clicking it. Furthermore make sure that your comput
 Now you are ready to create and import virtual machines. 
 
 See also the article on
-[how the VirtualBox Appliance was created](https://github.com/j54n1n/raspbian-mods/wiki/VirtualBox-Appliance-Image-Creation).
+[how the VirtualBox Appliance was created](https://github.com/rainerum-robotics-rpi/raspbian-mods/wiki/VirtualBox-Appliance-Image-Creation).
