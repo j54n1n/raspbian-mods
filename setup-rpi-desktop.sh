@@ -11,6 +11,10 @@ if [ $ID = debian ]; then
   wget https://raw.githubusercontent.com/Drewsif/PiShrink/63b7509ade7d2fb518536abd3c0d0eca43774b98/pishrink.sh
   sudo cp pishrink.sh /usr/local/bin
   rm pishrink.sh
+  # After an upgrade there could be some left over files.
+  if [ -d "~/oldconffiles" ]; then
+    rm -rf "~/oldconffiles"
+  fi
 else
   echo "This script can run only on Raspberry Pi Desktop operating system!"
 fi
