@@ -178,6 +178,11 @@ rpiModPackages() {
       runAsRoot packageUninstall $pkg
     fi
   done
+  # LibreOffice has a dependency on Java Runtime
+  packageQuery libreoffice
+  if [ $? = 0 ]; then
+    runAsRoot packageUninstall libreoffice
+  fi
   local uninstallJava="oracle-java8-jdk openjdk-8-jre oracle-java7-jdk openjdk-7-jre gcj-6-jre"
   if [ $ID = debian ]; then
     for pkg in $uninstallJava; do
