@@ -12,8 +12,8 @@ if [ $ID = debian ]; then
   sudo cp pishrink.sh /usr/local/bin
   rm pishrink.sh
   # After an upgrade there could be some left over files.
-  if [ -d "~/oldconffiles" ]; then
-    rm -rf "~/oldconffiles"
+  if [ -d "/home/pi/oldconffiles" ]; then
+    rm -rf "/home/pi/oldconffiles"
   fi
 else
   echo "This script can run only on Raspberry Pi Desktop operating system!"
