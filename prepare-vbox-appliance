@@ -6,9 +6,18 @@ if [ `id -u` -ne 0 ]; then
   exit 1
 fi
 
-# Zero out free space to achive higher compression rate for vbox image.
-mount -o ro,remount /
-zerofree -v /dev/sda1
-poweroff
+if [ -z `grep "\sext4 ro[\s,]" /proc/mounts` ]; then
+  # Recovery console:
+  # Zero out free space to achive higher compression rate for vbox image.
+  mount -o ro,remount /
+  zerofree -v /dev/sda1
+  poweroff
+else
+  # Boot with edited command line:
+  # Use old fashioned commands in case if we entered with init=/bin/bash.
+  zerofree -v /dev/sda1
+  echo 1 > /proc/sys/kernel/sysrq
+  echo o > /proc/sysrq-trigger
+fi
 
 exit 0
