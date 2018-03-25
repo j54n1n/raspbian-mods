@@ -118,7 +118,7 @@ packageUpdate() {
   fi
   if [ $ID_LIKE = debian ]; then
     apt-get update
-    apt-get --yes --force-yes upgrade
+    apt-get --yes --allow-downgrades --allow-remove-essential --allow-change-held-packages upgrade
   fi
 }
 
@@ -129,7 +129,7 @@ packageInstall() {
     return $?
   fi
   if [ $ID_LIKE = debian ]; then
-    apt-get --yes --force-yes -q=2 install $packageName
+    apt-get --yes --allow-downgrades --allow-remove-essential --allow-change-held-packages -q=2 install $packageName
     return $?
   fi
 }
@@ -141,7 +141,7 @@ packageUninstall() {
     return $?
   fi
   if [ $ID_LIKE = debian ]; then
-    apt-get --yes --force-yes -q=2 --purge autoremove $packageName
+    apt-get --yes --allow-downgrades --allow-remove-essential --allow-change-held-packages -q=2 --purge autoremove $packageName
     return $?
   fi
 }
@@ -151,8 +151,8 @@ packageCleanup() {
     $pacman --noconfirm -Scc
   fi
   if [ $ID_LIKE = debian ]; then
-    apt-get --yes --force-yes -q=2 --purge autoremove
-    apt-get --yes --force-yes -q=2 clean
+    apt-get --yes --allow-downgrades --allow-remove-essential --allow-change-held-packages -q=2 --purge autoremove
+    apt-get --yes --allow-downgrades --allow-remove-essential --allow-change-held-packages -q=2 clean
   fi
 }
 
@@ -181,7 +181,8 @@ rpiModPackages() {
   # LibreOffice has a dependency on Java Runtime
   packageQuery libreoffice
   if [ $? = 0 ]; then
-    runAsRoot packageUninstall libreoffice
+    runAsRoot packageUninstall "libreoffice\*"
+    sync # Just to be sure that apt has finished ...
   fi
   local uninstallJava="oracle-java8-jdk openjdk-8-jre oracle-java7-jdk openjdk-7-jre gcj-6-jre"
   if [ $ID = debian ]; then
