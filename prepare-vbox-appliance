@@ -6,7 +6,7 @@ if [ `id -u` -ne 0 ]; then
   exit 1
 fi
 
-if [ -z `grep "\sext4 ro[\s,]" /proc/mounts` ]; then
+if [ -z "`grep '\sext4 ro[\s,]' /proc/mounts`" ]; then
   # Recovery console:
   # Zero out free space to achive higher compression rate for vbox image.
   mount -o ro,remount /
