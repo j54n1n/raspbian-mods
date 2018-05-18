@@ -170,6 +170,7 @@ rpiModPackages() {
     nodered
     sonic-pi
     minecraft-pi
+    python3-thonny
   "
   runAsRoot packageUpdate
   for pkg in $uninstallPkgs; do
@@ -179,24 +180,24 @@ rpiModPackages() {
     fi
   done
   # LibreOffice has a dependency on Java Runtime
-  packageQuery libreoffice
-  if [ $? = 0 ]; then
-    runAsRoot packageUninstall "libreoffice\*"
-    sync # Just to be sure that apt has finished ...
-  fi
-  local uninstallJava="oracle-java8-jdk openjdk-8-jre oracle-java7-jdk openjdk-7-jre gcj-6-jre"
-  if [ $ID = debian ]; then
-    for pkg in $uninstallJava; do
-      packageQuery $pkg
-      if [ $? = 0 ]; then
-        runAsRoot packageUninstall $pkg
-      fi
-    done
-  elif [ $ID = raspbian ]; then
-    # Hack: For some reason Raspbian tries to install an alternative Java package.
-    # Therefore we hand over the entire package list to apt to avoid installation.
-    sudo apt-get --yes --purge autoremove $uninstallJava
-  fi
+  #packageQuery libreoffice
+  #if [ $? = 0 ]; then
+  #  runAsRoot packageUninstall "libreoffice\*"
+  #  sync # Just to be sure that apt has finished ...
+  #fi
+  #local uninstallJava="oracle-java8-jdk openjdk-8-jre oracle-java7-jdk openjdk-7-jre gcj-6-jre"
+  #if [ $ID = debian ]; then
+  #  for pkg in $uninstallJava; do
+  #    packageQuery $pkg
+  #    if [ $? = 0 ]; then
+  #      runAsRoot packageUninstall $pkg
+  #    fi
+  #  done
+  #elif [ $ID = raspbian ]; then
+  #  # Hack: For some reason Raspbian tries to install an alternative Java package.
+  #  # Therefore we hand over the entire package list to apt to avoid installation.
+  #  sudo apt-get --yes --purge autoremove $uninstallJava
+  #fi
   local installPkgsDebian="zerofree"
   if [ $ID = debian ]; then
     for pkg in $installPkgsDebian; do
