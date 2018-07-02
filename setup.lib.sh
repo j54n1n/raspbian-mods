@@ -161,8 +161,52 @@ runAsRoot() {
   sudo bash -c ". $BASH_SOURCE; $1 ${@: +2}"
 }
 
+# Raspbian Lite package mods.
+_rpiModLitePackages() {
+  local desktopPkg="raspberrypi-ui-mods"
+  local developPkgs="
+    git
+    idle3
+    python3-pip
+    python3-pygame
+    python3-gpiozero
+    python3-rpi.gpio
+    geany
+    realvnc-vnc-server
+    lxterminal
+  "
+  local uninstallPkgs="termit"
+  runAsRoot packageUpdate
+  runAsRoot packageInstall $desktopPkg
+  for pkg in $developPkgs; do
+    packageQuery $pkg
+    if [ $? != 0 ]; then
+      runAsRoot packageInstall $pkg
+    fi
+  done
+  # Enable boot to desktop.
+  sudo raspi-config nonint do_boot_behaviour B4
+  # Enable VNC server.
+  sudo raspi-config nonint do_vnc 0
+
+  for pkg in $uninstallPkgs; do
+    packageQuery $pkg
+    if [ $? = 0 ]; then
+      runAsRoot packageUninstall $pkg
+    fi
+  done
+  runAsRoot packageCleanup
+}
+
 # Raspbian package mods.
 rpiModPackages() {
+  if [ $ID = raspbian ]; then
+    # If we have no desktop environment then we are on Raspbian Lite.
+    if [ ! -e /etc/init.d/lightdm ]; then
+      _rpiModLitePackages
+      return
+    fi
+  fi
   local uninstallPkgs="
     wolfram-engine
     bluej
@@ -179,25 +223,6 @@ rpiModPackages() {
       runAsRoot packageUninstall $pkg
     fi
   done
-  # LibreOffice has a dependency on Java Runtime
-  #packageQuery libreoffice
-  #if [ $? = 0 ]; then
-  #  runAsRoot packageUninstall "libreoffice\*"
-  #  sync # Just to be sure that apt has finished ...
-  #fi
-  #local uninstallJava="oracle-java8-jdk openjdk-8-jre oracle-java7-jdk openjdk-7-jre gcj-6-jre"
-  #if [ $ID = debian ]; then
-  #  for pkg in $uninstallJava; do
-  #    packageQuery $pkg
-  #    if [ $? = 0 ]; then
-  #      runAsRoot packageUninstall $pkg
-  #    fi
-  #  done
-  #elif [ $ID = raspbian ]; then
-  #  # Hack: For some reason Raspbian tries to install an alternative Java package.
-  #  # Therefore we hand over the entire package list to apt to avoid installation.
-  #  sudo apt-get --yes --purge autoremove $uninstallJava
-  #fi
   local installPkgsDebian="zerofree"
   if [ $ID = debian ]; then
     for pkg in $installPkgsDebian; do
